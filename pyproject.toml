@@ -6,7 +6,7 @@ authors = ["Ivan Galin <gin.volgograd@gmail.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "~3.8"
+python = "~3.7"
 motor = "^2.1.0"
 pymongo = "^3.10.1"
 pydantic = {version = "^1.6.1", extras = ["email"]}
