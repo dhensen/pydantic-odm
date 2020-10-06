@@ -185,6 +185,8 @@ class DBPydanticMixin(BaseDBMixin):
             _doc = cls._decode_mongo_documents(_doc)
             document = cls.parse_obj(_doc)
             document._doc = _doc
+            document_id = _doc.get("id")
+            document.id = document_id
             documents.append(document)
         return documents
 
