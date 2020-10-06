@@ -427,6 +427,22 @@ class DBPydanticMixinTestCase:
             assert 1 < doc.age <= 3
             assert doc.username == "new_user_name"
 
+    async def test_save_after_find(self, init_test_db):
+        model_data = {"username": "test", "created": datetime.now(), "age": 10}
+        user = User(**model_data)
+        await user.save()
+        assert user
+        old_id = user.id
+
+        same_user_via_find_many = (await User.find_many({'_id': old_id}))[0]
+        new_username = "new_test"
+        same_user_via_find_many.username = new_username
+        await same_user_via_find_many.save()
+
+        again_same_user_via_find_many = (await User.find_many({'_id': old_id}))[0]
+        assert again_same_user_via_find_many.username == new_username
+        assert old_id == again_same_user_via_find_many.id
+
     async def test_update(self, init_test_db):
         model_data = {
             "username": "test_username",
