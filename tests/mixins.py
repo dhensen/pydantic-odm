@@ -434,12 +434,12 @@ class DBPydanticMixinTestCase:
         assert user
         old_id = user.id
 
-        same_user_via_find_many = (await User.find_many({'_id': old_id}))[0]
+        same_user_via_find_many = (await User.find_many({"_id": old_id}))[0]
         new_username = "new_test"
         same_user_via_find_many.username = new_username
         await same_user_via_find_many.save()
 
-        again_same_user_via_find_many = (await User.find_many({'_id': old_id}))[0]
+        again_same_user_via_find_many = (await User.find_many({"_id": old_id}))[0]
         assert again_same_user_via_find_many.username == new_username
         assert old_id == again_same_user_via_find_many.id
 
