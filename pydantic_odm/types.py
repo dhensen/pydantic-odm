@@ -23,15 +23,14 @@ class ObjectIdStr(str):
         yield cls.validate
 
     @classmethod
-    def validate(cls, v: Union[ObjectId, str]) -> str:
+    def validate(cls, v: Union[ObjectId, str]) -> ObjectId:
         if isinstance(v, ObjectId):
-            return str(v)
-        else:
-            try:
-                ObjectId(str(v))
-            except InvalidId:
-                raise ValueError("Not a valid ObjectId")
             return v
+
+        try:
+            return ObjectId(str(v))
+        except InvalidId:
+            raise ValueError("Not a valid ObjectId")
 
 
 class DateTimeRange(BaseModel):
