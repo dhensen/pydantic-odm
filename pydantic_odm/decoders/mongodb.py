@@ -27,9 +27,11 @@ class BaseMongoDBDecoder(AbstractMongoDBDecoder):
         Rename field `_id` to `id`.
         """
         data = data.copy()
-        data.pop("id", None)
         document_id = data.pop("_id", None)
-        decoded_data = {"id": document_id}
+        decoded_data = {}
+        if document_id:
+            data.pop("id", None)
+            decoded_data.update({"id": document_id})
         for k, v in data.items():
             if isinstance(v, list):
                 v_list = []
