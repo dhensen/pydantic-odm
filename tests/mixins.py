@@ -522,15 +522,16 @@ class DBPydanticMixinTestCase:
         with pytest.raises(ValueError, match=raise_msg):
             await user.reload()
 
-    async def test_bug_serialize_to_json_when_model_is_deeply_nested(
-        self, init_test_db
-    ):
-        """When you have a BaseDBMixin container model with children that are
+    async def test_serialize_to_json_when_model_is_deeply_nested(self, init_test_db):
+        """
+        When you have a BaseDBMixin container model with children that are
         DBPydanticMixin, serializing to json fails after the child objects are saved.
         (eg. then now have an ObjectId)
         """
 
         class FooThing(mixins.DBPydanticMixin):
+            """Model specific to this test"""
+
             name: str
 
             class Config:
@@ -538,6 +539,8 @@ class DBPydanticMixinTestCase:
                 collection = "test_post"
 
         class SomeContainer(mixins.BaseDBMixin):
+            """Container BaseDBMixin specific to this test"""
+
             many_things: List[FooThing]
 
         container = SomeContainer(
@@ -551,11 +554,20 @@ class DBPydanticMixinTestCase:
         container_2 = SomeContainer(many_things=container.many_things)
         container_2.json()
 
-    async def test_basedbmixin_can_be_serialized_to_json_when_child_has_objectid(self,):
+    async def test_basedbmixin_can_be_serialized_to_json_when_child_has_objectid(self):
+        """
+        Another more simple testcase that tests if a BaseDBMixin can be serialized
+        to json when a child has an ObjectId. This does not require a live database.
+        """
+
         class BarThing(mixins.DBPydanticMixin):
+            """Model specific to this test"""
+
             name: str
 
         class AnotherContainer(mixins.BaseDBMixin):
+            """Container BaseDBMixin specific to this test"""
+
             many_things: List[BarThing]
 
         bar = BarThing(name="haha")
