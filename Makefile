@@ -8,7 +8,7 @@ args = $(filter-out $@,$(MAKECMDGOALS))
 .PHONY: install
 install:
 	pip install -U poetry
-	POETRY_VIRTUALENVS_IN_PROJECT=true poetry env use python3.8
+	POETRY_VIRTUALENVS_IN_PROJECT=true poetry env use python3.9
 	poetry install
 	poetry run pip install -e .
 
