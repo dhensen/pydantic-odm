@@ -48,7 +48,7 @@ down-services:
 
 .PHONY: test
 test: up-services
-	pytest --cov=pydantic_odm --cov-config=setup.cfg --no-cov-on-fail
+	poetry run pytest --cov=pydantic_odm --cov-config=setup.cfg --no-cov-on-fail
 
 .PHONY: testwatch
 testwatch: up-services
